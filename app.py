@@ -63,4 +63,4 @@ def not_found(error):
 
 if __name__ == '__main__':
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    app.run()
+    app.run(host='0.0.0.0')
