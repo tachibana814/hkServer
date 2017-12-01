@@ -111,7 +111,7 @@ def getMusicInfo():
 def createEmotionKey():
     if not request.json or not 'image' in request.json:
         abort(400)
-    logging.log(request.json['image'],'body')
+    logging.log(logging.INFO, request.json['image'],'body')
     keywords = getEmotionKey(request.json['image'])
     return keywords
 
@@ -126,12 +126,19 @@ def upload_file():
                 logging.log(logging.INFO, "No selected file")
                 abort(402)
         file = request.files['file']
-        logging.log(logging.DEBUG, request.files['file'], 'body')
+        logging.log(logging.DEBUG, request.files['file'])
         if file:
             filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd(), "current_image.jpg"))
-            tasks = []
-            return jsonify({'tasks': tasks})
+            logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
+            directory = os.getcwd()+"static/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            file.save(os.path.join(directory, "current_image.jpg"))
+
+            score = getEmotionScore(file)
+            return jsonify(score = score)
+            # tasks = []
+            # return jsonify({'tasks': tasks})
 
 
 @app.errorhandler(404)
