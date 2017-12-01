@@ -74,8 +74,8 @@ def getMusic(key):
         'cmd': 'playInfo'
     }
     musiclist = requests.get('http://m.kugou.com/app/i/getSongInfo.php', params=data, headers= None, cookies = None)
-    url = json.loads(musiclist.content)['url']
-    return url
+    musicObj = json.loads(musiclist.content)
+    return musicObj
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
@@ -93,8 +93,9 @@ def upload_file():
 
 @app.route('/music/info', methods=['GET'])
 def getMusicInfo():
-    musicInfo = getMusic(request.json['keyword'])
-    return jsonify(url = musicInfo)
+    musicInfo = getMusic(request.args['keywords'])
+    if 'keywords' in request.args:
+        return jsonify(url = musicInfo['url'],)
 
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
@@ -129,7 +130,7 @@ def upload_file():
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error':'Not Found'}),404)
-
+    
 
 
 
@@ -143,4 +144,4 @@ if __name__ == '__main__':
     # print getMusic('347231')
     # print getMusic('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    app.run(debug = True)
+    app.run(debug=True)
