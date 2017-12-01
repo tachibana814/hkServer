@@ -46,7 +46,7 @@ def getEmotionScore(image):
         return ''
     else:
         return data
-    logging.log(logging.DEBUG, jsonify(data= data))
+    # logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
 
 # get score
@@ -109,7 +109,8 @@ def getMusicInfo():
     musicInfo = getMusic(request.args['keywords'])
     lyricsInfo = getLyrics(request.args['keywords'])
     if 'keywords' in request.args:
-        return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics=lyricsInfo)
+        return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
+
 
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
@@ -138,8 +139,10 @@ def upload_file():
             if not os.path.exists(directory):
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
-            score = getEmotionScore(directory+"current_image.jpg")
-            return jsonify(score = score)
+            key = getEmotionKey(directory+"current_image.jpg")
+            musicInfo = getMusic(key)
+            lyricsInfo = getLyrics(key)
+            return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
             # tasks = []
             # return jsonify({'tasks': tasks})
 
