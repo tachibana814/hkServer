@@ -46,7 +46,7 @@ def getEmotionScore(image):
         return ''
     else:
         return data
-        logging.log(logging.DEBUG, "return data = ")
+    logging.log(logging.DEBUG, "return data = ")
     conn.close()
 
 # get score
@@ -162,6 +162,6 @@ if __name__ == '__main__':
     # print getMusic('347231')
     # print getLyrics('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-
+    # print search('sad')
     # getEmotionScore()
     app.run(debug=True)
