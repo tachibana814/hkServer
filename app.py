@@ -21,6 +21,7 @@ app = Flask(__name__)
 cloudinary.config(cloud_name = "k3ith", api_key = "727583551141279", api_secret = "8gMNUCmI3uLzTNZXjbLV744I0Gc")
 
 
+# emotion api
 def getEmotionScore(image):
     imageUrl = cloudinary.uploader.upload(image)['secure_url']
     headers = {
@@ -41,7 +42,7 @@ def getEmotionScore(image):
         return data
     conn.close()
 
-
+# get score
 def getEmotionKey(image):
     d = getEmotionScore(image)
     keys = sorted(d, key=lambda k: d[k])
@@ -51,7 +52,7 @@ def getEmotionKey(image):
 
 # http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=%E7%8E%8B%E5%8A%9B%E5%AE%8F&page=1&pagesize=20&showtype=1
 # http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=sad&page=1&pagesize=10
-
+# search keyword
 def search(keyword):
     data = {
             'keyword': keyword,
@@ -76,6 +77,12 @@ def getMusic(key):
     musiclist = requests.get('http://m.kugou.com/app/i/getSongInfo.php', params=data, headers= None, cookies = None)
     musicObj = json.loads(musiclist.content)
     return musicObj
+
+
+
+
+
+
 
 @app.route('/music/info', methods=['GET'])
 def getMusicInfo():
@@ -118,9 +125,6 @@ def upload_file():
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error':'Not Found'}),404)
-    
-
-
 
 @app.route('/')
 def hello_world():
@@ -130,6 +134,6 @@ def hello_world():
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
-    # print getMusic('sad')
+    print getMusic('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    app.run(debug=True)
+    # app.run(debug=True)
