@@ -107,7 +107,7 @@ def getMusicInfo():
 def createEmotionKey():
     if not request.json or not 'image' in request.json:
         abort(400)
-    logging.log(request.json['image'],'body')
+    logging.log(logging.INFO, request.json['image'],'body')
     keywords = getEmotionKey(request.json['image'])
     return keywords
 
@@ -125,9 +125,15 @@ def upload_file():
         logging.log(logging.DEBUG, request.files['file'], 'body')
         if file:
             filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd(), "current_image.jpg"))
-            tasks = []
-            return jsonify({'tasks': tasks})
+            logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
+            directory = os.getcwd()+"static/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            file.save(os.path.join(directory, "current_image.jpg"))
+
+            return directory + "current_image.jpg"
+            # tasks = []
+            # return jsonify({'tasks': tasks})
 
 
 @app.errorhandler(404)
@@ -144,4 +150,4 @@ if __name__ == '__main__':
     # print getMusic('347231')
     print getLyrics('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    # app.run(debug=True)
+    app.run(debug=True)
