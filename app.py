@@ -123,7 +123,7 @@ def upload_file():
                 logging.log(logging.INFO, "No selected file")
                 abort(402)
         file = request.files['file']
-        logging.log(logging.DEBUG, request.files['file'], 'body')
+        logging.log(logging.DEBUG, request.files['file'])
         if file:
             filename = secure_filename(file.filename)
             logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
@@ -132,7 +132,8 @@ def upload_file():
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
 
-            return directory + "current_image.jpg"
+            score = getEmotionScore(file)
+            return jsonify(score = score)
             # tasks = []
             # return jsonify({'tasks': tasks})
 
