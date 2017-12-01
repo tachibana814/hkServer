@@ -78,8 +78,7 @@ def getMusic(key):
     return hashList
 
 
-
-@app.route('/music/info',methods=['GET'])
+@app.route('/music/info',methods=['POST'])
 def getMusicInfo():
     if not request.json or not 'keyword' in request.json:
         abort(400)
@@ -123,6 +122,6 @@ def hello_world():
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
-    print getMusic('sad')
+    # print getMusic('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    # app.run(debug = True)
+    app.run(debug = True)
