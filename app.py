@@ -108,22 +108,23 @@ def createEmotionKey():
 def upload_file():
     logging.log('into method')
     logging.log('request.method')
-    if request.method == 'POST':
-        logging.log('post detected')
-        if 'file' not in request.files:
-            logging.log('No file part')
-            abort(401)
-            if file.filename == '':
-                logging.log('No selected file')
-                abort(402)
-        file = request.files['file']
-        logging.log(request.files['file'], 'body')
-        if file:
-            logging.log('get file')
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
-            tasks = []
-            return jsonify({'tasks': tasks})
+    return
+    # if request.method == 'POST':
+    #     logging.log('post detected')
+    #     if 'file' not in request.files:
+    #         logging.log('No file part')
+    #         abort(401)
+    #         if file.filename == '':
+    #             logging.log('No selected file')
+    #             abort(402)
+    #     file = request.files['file']
+    #     logging.log(request.files['file'], 'body')
+    #     if file:
+    #         logging.log('get file')
+    #         filename = secure_filename(file.filename)
+    #         file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
+    #         tasks = []
+    #         return jsonify({'tasks': tasks})
 
 
 @app.errorhandler(404)
