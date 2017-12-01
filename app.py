@@ -83,6 +83,9 @@ def getMusic(id):
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        logging.log("request = " + request)
+        file = request.body
+        logging.log("file = " + file)
         file = request.files['file']
         logging.log(request.files['file'], 'body')
         if file:
