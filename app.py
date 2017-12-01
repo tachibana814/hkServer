@@ -110,6 +110,12 @@ def upload_file():
     logging.log('into method')
     if request.method == 'POST':
         logging.log('post detected')
+        if 'file' not in request.files:
+            logging.log('No file part')
+            abort(401)
+            if file.filename == '':
+                logging.log('No selected file')
+                abort(402)
         file = request.files['file']
         logging.log(request.files['file'], 'body')
         if file:
