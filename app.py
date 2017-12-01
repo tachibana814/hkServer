@@ -85,9 +85,12 @@ def getLyrics(key):
         'hash': search(key),
         'r': 'play/getdata'
     }
-    lyrics = json.loads(requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None).content)
+    lyrics = json.loads(requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None).content)['data']['lyrics']
 
-    a = lyrics.split('\r\n')
+    lyricsList = lyrics.split('\r\n')
+    for lyric in lyricsList:
+        lyric[10:]=a
+
     return lyrics
 
 
