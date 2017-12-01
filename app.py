@@ -78,12 +78,10 @@ def getMusic(key):
     return hashList
 
 
-@app.route('/music/info',methods=['POST'])
+@app.route('/music/info', methods=['GET'])
 def getMusicInfo():
-    if not request.json or not 'keyword' in request.json:
-        abort(400)
     musicInfo = getMusic(request.json['keyword'])
-    return musicInfo
+    return jsonify(musicInfo)
 
 
 @app.route('/api/emotionkey', methods=['POST'])
