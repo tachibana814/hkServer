@@ -28,7 +28,7 @@ def getEmotionScore(image):
     logging.log(logging.DEBUG, imageUrl)
     headers = {
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': 'db7f098cfc6544f799e25b12c103aa55',
+        'Ocp-Apim-Subscription-Key': 'af2476d398aa45d7b7386a4591b83ff7',
     }
     params = urllib.urlencode({
     })
@@ -49,6 +49,7 @@ def getEmotionScore(image):
         return data
     # logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
+
 
 # get score
 def getEmotionKey(image):
@@ -125,26 +126,63 @@ def createEmotionKey():
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            logging.log(logging.INFO, "No file")
-            abort(401)
-            if file.filename == '':
-                logging.log(logging.INFO, "No selected file")
-                abort(402)
-        file = request.files['file']
-        logging.log(logging.DEBUG, file)
-        if file:
-            filename = secure_filename(file.filename)
-            logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
-            directory = os.getcwd()+"/static/"
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            file.save(os.path.join(directory, "current_image.jpg"))
-            key = getEmotionKey(directory+"current_image.jpg")
-            musicInfo = getMusic(key)
-            lyricsInfo = getLyrics(key)
-            return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
+    return jsonify(link='http://fs.open.kugou.com/58b8877b417dc9c1179c2f66a304780a/5a216342/G013/M04/19/09/rYYBAFUNoi2AdlG7AC48VTPd088072.mp3',
+                   title='Amber Carrington - Sad',artist='Amber Carrington',img='https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg',lyrics=[
+    "SadVoice Performance) - Amber Carrington",
+    "Man  it's been a long day",
+    "Stuck thinking 'bout it driving on the freeway",
+    "Wondering if I really tried everything I could",
+    "Not knowing if I should try a little harder",
+    "Oh  but i'm scared to tell",
+    "That there may not be another one like this",
+    "And I confess that i'm only holding on by a thin thin threat",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "I'm so sad  saaad",
+    "Man  it's been a long night",
+    "Just sitting here  trying not to look back",
+    "Still looking at the road we never drove on",
+    "And wondering if the one I chose was the right one",
+    "Oh  but i'm scared to tell",
+    "That there may not be another one like this",
+    "And I confess that i'm only holding on by a thin thin threat",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "I'm so sad  saaad",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And I'm kicking the dirt cause I never gave you",
+    "The things that you needed to have",
+    "I'm so sad  saaad",
+    "I'm so sad",
+    ""
+  ])
+    # if request.method == 'POST':
+    #     if 'file' not in request.files:
+    #         logging.log(logging.INFO, "No file")
+    #         abort(401)
+    #         if file.filename == '':
+    #             logging.log(logging.INFO, "No selected file")
+    #             abort(402)
+    #     file = request.files['file']
+    #     logging.log(logging.DEBUG, file)
+    #     if file:
+    #         filename = secure_filename(file.filename)
+    #         logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
+    #         directory = os.getcwd()+"/static/"
+    #         if not os.path.exists(directory):
+    #             os.makedirs(directory)
+    #         file.save(os.path.join(directory, "current_image.jpg"))
+    #         key = getEmotionKey(directory+"current_image.jpg")
+    #         musicInfo = getMusic(key)
+    #         lyricsInfo = getLyrics(key)
+            # return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
+
             # tasks = []
             # return jsonify({'tasks': tasks})
 
@@ -162,7 +200,7 @@ if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
     # print getLyrics('sad')
-    # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
+    # getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
 
     # getEmotionScore()
     app.run(debug=True)
