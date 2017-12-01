@@ -28,7 +28,7 @@ def getEmotionScore(image):
     logging.log(logging.DEBUG, imageUrl)
     headers = {
         'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key': '8c58e12ff0d14e3fa519bfa7b74055f5',
+        'Ocp-Apim-Subscription-Key': 'db7f098cfc6544f799e25b12c103aa55',
     }
     params = urllib.urlencode({
     })
@@ -36,14 +36,15 @@ def getEmotionScore(image):
     conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
     conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
     response = conn.getresponse()
+    # logging.log(logging.DEBUG, "response = " + response)
     data =response.read()
     # logging.log(logging.DEBUG, json.loads(response))
     try:
         data = json.loads(response.read())[0]['scores']
-        logging.log(logging.DEBUG, jsonify(data= data))
+        logging.log(logging.DEBUG,response.read())
+        logging.log(logging.DEBUG, "data = " + data)
     except Exception:
-        print "no face"
-        return ''
+        return Exception
     else:
         return data
     # logging.log(logging.DEBUG, jsonify(data= data))
@@ -52,6 +53,7 @@ def getEmotionScore(image):
 # get score
 def getEmotionKey(image):
     d = getEmotionScore(image)
+    print d
     keys = sorted(d, key=lambda k: d[k])
     count = len(keys)
     return keys[count-1]
@@ -161,6 +163,6 @@ if __name__ == '__main__':
     # print getMusic('347231')
     # print getLyrics('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    # print search('sad')
+
     # getEmotionScore()
     app.run(debug=True)
