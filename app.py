@@ -26,7 +26,7 @@ def getEmotionScore(image):
     logging.log(logging.DEBUG, "getEmotionScore")
                            
     imageUrl = cloudinary.uploader.upload(os.getcwd() + "/static/" + "current_image.jpg")['secure_url']
-    logging.log(logging.DEBUG, "imageUrl = " + imageUrl)
+    logging.log(logging.DEBUG, jsonify(imageUrl= imageUrl))
     headers = {
         'Content-Type': 'application/octet-stream',
         'Ocp-Apim-Subscription-Key': 'db7f098cfc6544f799e25b12c103aa55',
@@ -37,16 +37,16 @@ def getEmotionScore(image):
     conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
     conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
     response = conn.getresponse()
-    logging.log(logging.DEBUG, "response = " + response)
+    logging.log(logging.DEBUG, jsonify(response= response))
     try:
         data = json.loads(response.read())[0]['scores']
-        logging.log(logging.DEBUG, "data = " + data)
+        logging.log(logging.DEBUG, jsonify(data= data))
     except Exception:
         print "no face"
         return ''
     else:
         return data
-    logging.log(logging.DEBUG, "return data = ")
+    logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
 
 # get score
