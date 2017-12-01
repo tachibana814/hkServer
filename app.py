@@ -42,6 +42,7 @@ def getEmotionScore(image):
         logging.log(logging.DEBUG, "data = " + data)
     except Exception:
         print "no face"
+        return ''
     else:
         return data
     logging.log(logging.DEBUG, "return data = ")
@@ -140,7 +141,7 @@ def upload_file():
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
 
-            score = getEmotionScore(file)
+            score = getEmotionScore(filename)
             return jsonify(score = score)
             # tasks = []
             # return jsonify({'tasks': tasks})
