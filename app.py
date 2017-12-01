@@ -111,20 +111,16 @@ def createEmotionKey():
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
-    logging.log('shit!!!!', 'into method')
-    logging.log('shit!!!!', 'request.method')
     if request.method == 'POST':
-        logging.log('shit!!!!', 'post detected')
         if 'file' not in request.files:
-            logging.log('shit!!!!', 'No file part')
             abort(401)
             if file.filename == '':
-                logging.log('shit!!!!', 'No selected file')
+                print "No selected file"
                 abort(402)
         file = request.files['file']
         logging.log(request.files['file'], 'body')
         if file:
-            logging.log('shit!!!!', 'get file')
+            print "get file"
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
             tasks = []
