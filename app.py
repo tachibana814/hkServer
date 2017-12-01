@@ -131,7 +131,7 @@ def upload_file():
                 logging.log(logging.INFO, "No selected file")
                 abort(402)
         file = request.files['file']
-        logging.log(logging.DEBUG, request.files['file'])
+        logging.log(logging.DEBUG, file)
         if file:
             filename = secure_filename(file.filename)
             logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
