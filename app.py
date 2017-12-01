@@ -118,7 +118,7 @@ def upload_file():
                 print "No selected file"
                 abort(402)
         file = request.files['file']
-        logging.log(request.files['file'], 'body')
+        # logging.log(request.files['file'], 'body')
         if file:
             print "get file"
             filename = secure_filename(file.filename)
