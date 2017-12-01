@@ -24,7 +24,8 @@ cloudinary.config(cloud_name = "k3ith", api_key = "727583551141279", api_secret 
 # emotion api
 def getEmotionScore(image):
     logging.log(logging.DEBUG, "getEmotionScore")
-    imageUrl = cloudinary.uploader.upload(image)['secure_url']
+                           
+    imageUrl = cloudinary.uploader.upload(os.getcwd() + "/static/" + "current_image.jpg")['secure_url']
     logging.log(logging.DEBUG, "imageUrl = " + imageUrl)
     headers = {
         'Content-Type': 'application/octet-stream',
