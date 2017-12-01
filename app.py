@@ -130,7 +130,7 @@ def upload_file():
         if file:
             filename = secure_filename(file.filename)
             logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
-            directory = os.getcwd()+"static/"
+            directory = os.getcwd()+"/static/"
             if not os.path.exists(directory):
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
