@@ -3,11 +3,12 @@
 
 from flask import Flask,jsonify,abort,request
 from flask import make_response
-import logging, httplib, urllib
+import logging, httplib, urllib,os
 import json
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from werkzeug.utils import secure_filename
 
 
 log = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ cloudinary.config(cloud_name = "k3ith", api_key = "727583551141279", api_secret 
 def getEmotionScore(image):
     imageUrl = cloudinary.uploader.upload(image)['secure_url']
     headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/octet-stream',
         'Ocp-Apim-Subscription-Key': 'db7f098cfc6544f799e25b12c103aa55',
     }
     params = urllib.urlencode({
@@ -30,9 +31,13 @@ def getEmotionScore(image):
     conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
     conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
     response = conn.getresponse()
-    data = json.loads(response.read())[0]['scores']
+    try:
+        data = json.loads(response.read())[0]['scores']
+    except Exception:
+        print "no face"
+    else:
+        return data
     conn.close()
-    return data
 
 
 def getEmotionKey(image):
@@ -48,6 +53,18 @@ def createEmotionKey():
         abort(400)
     keywords = getEmotionKey(request.json['image'])
     return keywords
+
+
+@app.route('/image', methods=['GET','POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
+            tasks = []
+            return jsonify({'tasks': tasks})
+
 
 @app.errorhandler(404)
 def not_found(error):
