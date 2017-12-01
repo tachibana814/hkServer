@@ -74,15 +74,15 @@ def getMusic(key):
         'cmd': 'playInfo'
     }
     musiclist = requests.get('http://m.kugou.com/app/i/getSongInfo.php', params=data, headers= None, cookies = None)
-    url = json.loads(musiclist.content)['url']
-    return url
+    musicObj = json.loads(musiclist.content)
+    return musicObj
 
 
 @app.route('/music/info', methods=['GET'])
 def getMusicInfo():
     musicInfo = getMusic(request.args['keywords'])
     if 'keywords' in request.args:
-        return jsonify(url = musicInfo)
+        return jsonify(url = musicInfo['url'],)
 
 
 @app.route('/api/emotionkey', methods=['POST'])
@@ -109,7 +109,7 @@ def upload_file():
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error':'Not Found'}),404)
-
+    
 
 
 
