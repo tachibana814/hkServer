@@ -79,9 +79,14 @@ def getMusic(key):
     return musicObj
 
 
-
-
-
+# http://www.kugou.com/yy/index.php?r=play/getdata&hash=CB7EE97F4CC11C4EA7A1FA4B516A5D97
+def getLyrics(key):
+    data = {
+        'hash': search(key),
+        'r':'play/getdata'
+    }
+    lyrics = requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None)
+    return lyrics
 
 
 @app.route('/music/info', methods=['GET'])
@@ -133,6 +138,6 @@ def hello_world():
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
-    print getMusic('sad')
+    # print getLyrics('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    # app.run(debug=True)
+    app.run(debug=True)
