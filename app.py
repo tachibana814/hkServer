@@ -46,7 +46,7 @@ def getEmotionScore(image):
         return ''
     else:
         return data
-    # logging.log(logging.DEBUG, jsonify(data= data))
+    logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
 
 # get score
@@ -154,7 +154,6 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    getEmotionScore('/Users/keith/Desktop/timg.jpg')
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
     # print getLyrics('sad')
