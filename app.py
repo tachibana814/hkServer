@@ -102,6 +102,7 @@ def createEmotionKey():
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
     logging.log('into method')
+    logging.log('request.method')
     if request.method == 'POST':
         logging.log('post detected')
         if 'file' not in request.files:
