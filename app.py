@@ -75,7 +75,7 @@ def getMusic(key):
     }
     musiclist = requests.get('http://m.kugou.com/app/i/getSongInfo.php', params=data, headers= None, cookies = None)
     hashList = json.loads(musiclist.content)
-    return hashList
+    return json.dumps(hashList)
 
 
 @app.route('/music/info', methods=['GET'])
