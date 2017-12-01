@@ -38,15 +38,10 @@ def getEmotionScore(image):
     response = conn.getresponse()
     # logging.log(logging.DEBUG, "response = " + response)
     data =response.read()
+
     # logging.log(logging.DEBUG, json.loads(response))
-    try:
-        data = json.loads(response.read())[0]['scores']
-        logging.log(logging.DEBUG,response.read())
-        logging.log(logging.DEBUG, "data = " + data)
-    except Exception:
-        return Exception
-    else:
-        return data
+    score = json.loads(data)[0]['scores']
+    return score
     # logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
 
@@ -200,7 +195,7 @@ if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
     # print getLyrics('sad')
-    # getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
+    print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
 
     # getEmotionScore()
     app.run(debug=True)
