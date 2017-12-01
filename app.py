@@ -24,12 +24,11 @@ cloudinary.config(cloud_name = "k3ith", api_key = "727583551141279", api_secret 
 # emotion api
 def getEmotionScore(image):
     logging.log(logging.DEBUG, "getEmotionScore")
-                           
-    imageUrl = cloudinary.uploader.upload(os.getcwd() + "/static/" + "current_image.jpg")['secure_url']
-    logging.log(logging.DEBUG, jsonify(imageUrl= imageUrl))
+    imageUrl = cloudinary.uploader.upload(image)['secure_url']
+    logging.log(logging.DEBUG, imageUrl)
     headers = {
-        'Content-Type': 'application/octet-stream',
-        'Ocp-Apim-Subscription-Key': 'db7f098cfc6544f799e25b12c103aa55',
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': '8c58e12ff0d14e3fa519bfa7b74055f5',
     }
     params = urllib.urlencode({
     })
@@ -37,7 +36,8 @@ def getEmotionScore(image):
     conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
     conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
     response = conn.getresponse()
-    logging.log(logging.DEBUG, jsonify(response= response))
+    data =response.read()
+    # logging.log(logging.DEBUG, json.loads(response))
     try:
         data = json.loads(response.read())[0]['scores']
         logging.log(logging.DEBUG, jsonify(data= data))
@@ -46,7 +46,7 @@ def getEmotionScore(image):
         return ''
     else:
         return data
-    logging.log(logging.DEBUG, jsonify(data= data))
+    # logging.log(logging.DEBUG, jsonify(data= data))
     conn.close()
 
 # get score
@@ -111,9 +111,6 @@ def getMusicInfo():
     if 'keywords' in request.args:
         return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics=lyricsInfo)
 
-
-
-
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
     if not request.json or not 'image' in request.json:
@@ -141,8 +138,7 @@ def upload_file():
             if not os.path.exists(directory):
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
-
-            score = getEmotionScore(filename)
+            score = getEmotionScore(directory+"current_image.jpg")
             return jsonify(score = score)
             # tasks = []
             # return jsonify({'tasks': tasks})
@@ -158,6 +154,7 @@ def hello_world():
 
 
 if __name__ == '__main__':
+    getEmotionScore('/Users/keith/Desktop/timg.jpg')
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
     # print getLyrics('sad')
