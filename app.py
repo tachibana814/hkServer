@@ -96,4 +96,4 @@ if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
 
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    app.run()
+    app.run(debug = True)
