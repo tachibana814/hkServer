@@ -117,16 +117,16 @@ def createEmotionKey():
 def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
+            logging.log(logging.INFO, "No file")
             abort(401)
             if file.filename == '':
-                print "No selected file"
+                logging.log(logging.INFO, "No selected file")
                 abort(402)
         file = request.files['file']
-        # logging.log(request.files['file'], 'body')
+        logging.log(logging.DEBUG, request.files['file'], 'body')
         if file:
-            print "get file"
             filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
+            file.save(os.path.join(os.getcwd(), "current_image.jpg"))
             tasks = []
             return jsonify({'tasks': tasks})
 
