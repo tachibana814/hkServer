@@ -83,9 +83,11 @@ def getMusic(key):
 def getLyrics(key):
     data = {
         'hash': search(key),
-        'r':'play/getdata'
+        'r': 'play/getdata'
     }
-    lyrics = requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None)
+    lyrics = json.loads(requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None).content)
+
+    a = lyrics.split('\r\n')
     return lyrics
 
 
@@ -106,7 +108,6 @@ def createEmotionKey():
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
-    return
     if request.method == 'POST':
         if 'file' not in request.files:
             abort(401)
