@@ -81,7 +81,7 @@ def getMusic(key):
 def getMusicInfo():
     musicInfo = getMusic(request.args['keywords'])
     if 'keywords' in request.args:
-        return jsonify(url = musicInfo['url'],)
+        return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'])
 
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
