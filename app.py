@@ -49,7 +49,22 @@ def getEmotionKey(image):
     return keys[count-1]
 
 
-def getMusicUrl(keyword):
+# http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=%E7%8E%8B%E5%8A%9B%E5%AE%8F&page=1&pagesize=20&showtype=1
+# http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=sad&page=1&pagesize=10
+
+def search(keyword):
+    data = {
+            'keyword': keyword,
+            'format': json,
+            'page': 1,
+            'pagesize': 10
+    }
+    musiclist = requests.get('http://mobilecdn.kugou.com/api/v3/search/song', params=data, headers= None, cookies = None)
+    a = json.loads(musiclist.content)['data']['']
+    return a
+
+
+def getMusicId(keyword):
     data = {'keywords': keyword}
     resp = requests.get('http://enigmatic-refuge-10196.herokuapp.com/search', params=data, headers=None, cookies=None)
     songsList = json.loads(resp.content)['result']['songs']
@@ -59,6 +74,22 @@ def getMusicUrl(keyword):
     return choice(idList)
 
 
+def getMusic(id):
+    data = {'id':id}
+    resp = requests.get('http://localhost:3000/music/url', params=data, headers=None, cookies=None)
+    a = json.loads(resp.content)
+    return resp
+
+@app.route('/image', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        logging.log(request.files['file'], 'body')
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
+            tasks = []
+            return jsonify({'tasks': tasks})
 
 
 @app.route('/api/emotionkey', methods=['POST'])
@@ -69,16 +100,10 @@ def createEmotionKey():
     keywords = getEmotionKey(request.json['image'])
     return keywords
 
+# @app.route('api/music/url',methods=['GET'])
+# def
 
-@app.route('/image', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
-            tasks = []
-            return jsonify({'tasks': tasks})
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -94,6 +119,7 @@ def hello_world():
 
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
-
+    # print getMusic('347231')
+    print search('happiness')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
     app.run(debug = True)
