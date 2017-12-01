@@ -1,11 +1,13 @@
 # coding = UTF-8
+# -*- coding: cp936 -*-
 
 
 from flask import Flask,jsonify,abort,request
 from flask import make_response
 import logging, httplib, urllib,os
-import json
+import json, requests
 import cloudinary
+from random import choice
 import cloudinary.uploader
 import cloudinary.api
 from werkzeug.utils import secure_filename
@@ -47,15 +49,28 @@ def getEmotionKey(image):
     return keys[count-1]
 
 
+def getMusicUrl(keyword):
+    data = {'keywords': keyword}
+    resp = requests.get('http://enigmatic-refuge-10196.herokuapp.com/search', params=data, headers=None, cookies=None)
+    songsList = json.loads(resp.content)['result']['songs']
+    idList = []
+    for song in songsList:
+        idList.append(song['id'])
+    return choice(idList)
+
+
+
+
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
     if not request.json or not 'image' in request.json:
         abort(400)
+    logging.log(request.json['image'],'body')
     keywords = getEmotionKey(request.json['image'])
     return keywords
 
 
-@app.route('/image', methods=['GET','POST'])
+@app.route('/image', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
@@ -64,7 +79,6 @@ def upload_file():
             file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
             tasks = []
             return jsonify({'tasks': tasks})
-
 
 @app.errorhandler(404)
 def not_found(error):
@@ -79,5 +93,7 @@ def hello_world():
 
 
 if __name__ == '__main__':
+    print getMusicUrl(u'º£À«Ìì¿Õ')
+
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    app.run()
+    # app.run()
