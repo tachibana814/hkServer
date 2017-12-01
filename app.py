@@ -37,7 +37,7 @@ def getEmotionScore(image):
     conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
     conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
     response = conn.getresponse()
-    logging.log(logging.DEBUG, jsonify(response= response))
+    # logging.log(logging.DEBUG, jsonify(response= response))
     try:
         data = json.loads(response.read())[0]['scores']
         logging.log(logging.DEBUG, jsonify(data= data))
