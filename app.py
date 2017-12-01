@@ -74,14 +74,14 @@ def getMusic(key):
         'cmd': 'playInfo'
     }
     musiclist = requests.get('http://m.kugou.com/app/i/getSongInfo.php', params=data, headers= None, cookies = None)
-    hashList = json.loads(musiclist.content)
-    return json.dumps(hashList)
+    url = json.loads(musiclist.content)['url']
+    return url
 
 
 @app.route('/music/info', methods=['GET'])
 def getMusicInfo():
     musicInfo = getMusic(request.json['keyword'])
-    return jsonify(url = musicInfo['url'])
+    return jsonify(url = musicInfo)
 
 
 @app.route('/api/emotionkey', methods=['POST'])
@@ -120,6 +120,6 @@ def hello_world():
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
     # print getMusic('347231')
-    print getMusic('sad')
+    # print getMusic('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
-    # app.run(debug = True)
+    app.run(debug = True)
