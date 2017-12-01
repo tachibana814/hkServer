@@ -77,13 +77,25 @@ def getMusic(key):
     musicObj = json.loads(musiclist.content)
     return musicObj
 
+@app.route('/image', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        logging.log("request = " + request)
+        file = request.body
+        logging.log("file = " + file)
+        file = request.files['file']
+        logging.log(request.files['file'], 'body')
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
+            tasks = []
+            return jsonify({'tasks': tasks})
 
 @app.route('/music/info', methods=['GET'])
 def getMusicInfo():
     musicInfo = getMusic(request.args['keywords'])
     if 'keywords' in request.args:
         return jsonify(url = musicInfo['url'],)
-
 
 @app.route('/api/emotionkey', methods=['POST'])
 def createEmotionKey():
@@ -96,10 +108,13 @@ def createEmotionKey():
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
+    logging.log('into method')
     if request.method == 'POST':
+        logging.log('post detected')
         file = request.files['file']
         logging.log(request.files['file'], 'body')
         if file:
+            logging.log('get file')
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.getcwd()+"/static", "current_image.jpg"))
             tasks = []
