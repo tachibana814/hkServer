@@ -73,7 +73,7 @@ def search(keyword):
     #     hashList.append(song['id'])
 
 
-# http://m.kugou.com/app/i/getSongInfo.php?hash=2d78a1b92a0bbdabe65513466d69e5bd&cmd=playInfo
+# http://m.kugou.com/app/i/getSongInfo.php?hash=dce48990bb461e498a2a80cd35b3402a&cmd=playInfo
 def getMusics(key):
     data = {
         'hash': search(key),
@@ -84,10 +84,10 @@ def getMusics(key):
     return musicObj
 
 
-# http://www.kugou.com/yy/index.php?r=play/getdata&hash=CB7EE97F4CC11C4EA7A1FA4B516A5D97
-def getLyrics(key):
+# http://www.kugou.com/yy/index.php?r=play/getdata&hash=dce48990bb461e498a2a80cd35b3402a
+def getLyrics(hash):
     data = {
-        'hash': search(key),
+        'hash': hash,
         'r': 'play/getdata'
     }
     lyrics = json.loads(requests.get('http://www.kugou.com/yy/index.php', params=data, headers= None, cookies = None).content)['data']['lyrics']
@@ -109,7 +109,7 @@ def getMusicInfo():
     musicInfo = getMusics(request.args['keywords'])
     lyricsInfo = getLyrics(request.args['keywords'])
     if 'keywords' in request.args:
-        return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
+        return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= getLyrics('dce48990bb461e498a2a80cd35b3402a'))
 
 
 @app.route('/api/emotionkey', methods=['POST'])
@@ -120,6 +120,43 @@ def createEmotionKey():
     keywords = getEmotionKey(request.json['image'])
     return keywords
 
+
+a = jsonify(link="http://fs.open.kugou.com/f65103b1dc742d2d8a52caebcfa5e409/5a222042/G080/M07/0F/09/kA0DAFgvWRKAFgoWACkub07Biq0106.mp3",title='Happy',artist='Mocca',img='',lyrics=getLyrics('dce48990bb461e498a2a80cd35b3402a')
+b = jsonify(link='http://fs.open.kugou.com/58b8877b417dc9c1179c2f66a304780a/5a216342/G013/M04/19/09/rYYBAFUNoi2AdlG7AC48VTPd088072.mp3',
+                   title='Amber Carrington - Sad',artist='Amber Carrington',img='https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg',lyrics=[
+    "SadVoice Performance) - Amber Carrington",
+    "Man  it's been a long day",
+    "Stuck thinking 'bout it driving on the freeway",
+    "Wondering if I really tried everything I could",
+    "Not knowing if I should try a little harder",
+    "Oh  but i'm scared to tell",
+    "That there may not be another one like this",
+    "And I confess that i'm only holding on by a thin thin threat",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "I'm so sad  saaad",
+    "Man  it's been a long night",
+    "Just sitting here  trying not to look back",
+    "Still looking at the road we never drove on",
+    "And wondering if the one I chose was the right one",
+    "Oh  but i'm scared to tell",
+    "That there may not be another one like this",
+    "And I confess that i'm only holding on by a thin thin threat",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "I'm so sad  saaad",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And i'm kicking the dirt cause I never gave you the things that you needed to have",
+    "And i'm kicking the curb cause you never heard",
+    "The words that you needed so bad",
+    "And I'm kicking the dirt cause I never gave you",
+    "The things that you needed to have",
+    "I'm so sad  saaad",
+    "I'm so sad",
+    ""
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
