@@ -200,7 +200,7 @@ def getMusic():
                 os.makedirs(directory)
             file.save(os.path.join(directory, "current_image.jpg"))
             key = getEmotionKey(directory+"current_image.jpg")
-            musicInfo = getMusic(key)
+            musicInfo = getMusics(key)
             lyricsInfo = getLyrics(key)
             return jsonify(link = musicInfo['url'],title = musicInfo['fileName'],img=musicInfo['album_img'],artist = musicInfo['singerName'],lyrics= lyricsInfo)
 
