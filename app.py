@@ -74,7 +74,7 @@ def search(keyword):
 
 
 # http://m.kugou.com/app/i/getSongInfo.php?hash=2d78a1b92a0bbdabe65513466d69e5bd&cmd=playInfo
-def getMusic(key):
+def getMusics(key):
     data = {
         'hash': search(key),
         'cmd': 'playInfo'
@@ -182,7 +182,7 @@ def upload_file():
             # return jsonify({'tasks': tasks})
 
 @app.route('/images', methods=['GET', 'POST'])
-def upload_file():
+def getMusic():
     if request.method == 'POST':
         if 'file' not in request.files:
             logging.log(logging.INFO, "No file")
@@ -202,7 +202,7 @@ def upload_file():
             key = getEmotionKey(directory+"current_image.jpg")
             musicInfo = getMusic(key)
             lyricsInfo = getLyrics(key)
-            return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
+            return jsonify(link = musicInfo['url'],title = musicInfo['fileName'],img=musicInfo['album_img'],artist = musicInfo['singerName'],lyrics= lyricsInfo)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -215,7 +215,7 @@ def hello_world():
 
 if __name__ == '__main__':
     # print getMusicUrl(u'º£À«Ìì¿Õ')
-    # print getMusic('347231')
+    print getMusics('sad')
     # print getLyrics('sad')
     # print getEmotionKey('https://i.pinimg.com/736x/dd/21/a5/dd21a5719f50d914faf50c7b01c00a7f--taylor-marie-hill-taylor-hill-face.jpg')
 
