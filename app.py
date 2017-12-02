@@ -181,6 +181,28 @@ def upload_file():
             # tasks = []
             # return jsonify({'tasks': tasks})
 
+@app.route('/images', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            logging.log(logging.INFO, "No file")
+            abort(401)
+            if file.filename == '':
+                logging.log(logging.INFO, "No selected file")
+                abort(402)
+        file = request.files['file']
+        logging.log(logging.DEBUG, file)
+        if file:
+            filename = secure_filename(file.filename)
+            logging.log(logging.INFO, "os.getcwd() = " + os.getcwd())
+            directory = os.getcwd()+"/static/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            file.save(os.path.join(directory, "current_image.jpg"))
+            key = getEmotionKey(directory+"current_image.jpg")
+            musicInfo = getMusic(key)
+            lyricsInfo = getLyrics(key)
+            return jsonify(url = musicInfo['url'],title = musicInfo['fileName'],singerName = musicInfo['singerName'],lyrics= lyricsInfo)
 
 @app.errorhandler(404)
 def not_found(error):
